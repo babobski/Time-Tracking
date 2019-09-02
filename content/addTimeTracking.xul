@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="less://komodo/skin/global/global.less" type="text/css"?>
+<?xml-stylesheet href="less://less/skin/less.less" type="text/css"?>
+
+<window
+	id="add-time-tracking-window"
+	title="Add New Time Tracking"
+	orient="horizontal"
+	width="400"
+	height="270"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/x-javascript" src="chrome://timeTracking/content/addTimeTracking.js" />
+	
+
+	<vbox flex="1" style="padding: 5px;">
+		<textbox label="Project" emptytext="Project" id="project" flex="1" />
+		<textbox label="Description" emptytext="Description" id="description" flex="1" />
+		<textbox label="Start Time" emptytext="Start Time" id="startTime" flex="1" />
+		<textbox label="End Time" emptytext="End Time" id="endTime" flex="1" />
+		<vbox flex="1">
+			<button label="Add Time Tracking" onclick="TimeTracking.addTimeTracking();" flex="1"/>
+			<button label="Cancel" onclick="window.close();" flex="1"/>
+		</vbox>
+	</vbox>
+</window>
+

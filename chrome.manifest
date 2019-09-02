@@ -1,0 +1,4 @@
+content timeTracking content/
+overlay chrome://komodo/content/komodo.xul chrome://timeTracking/content/overlay.xul
+#overlay chrome://komodo/content/pref/pref-html.xul chrome://FontAwsome/content/pref-overlay.xul
+skin timeTracking classic/1.0 skin/

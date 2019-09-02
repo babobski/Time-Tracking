@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet href="chrome://timeTracking/skin/timeTracking.css" type="text/css"?>
+<overlay id="timeTracking" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/x-javascript" src="chrome://timeTracking/content/overlay.js" />
+
+
+	<ko-pane id="workspace_bottom_area">
+	<browser type="ko-widget" id="timeTrackingViewbox" label="Time Tracking"
+			 tab_oncommand=""
+			 tab_onfocus=""
+			 icon="koicon://ko-svg/chrome/icomoon/skin/font.svg"
+			 src="chrome://timeTracking/content/panel.xul"/>
+	</ko-pane>
+</overlay>
+

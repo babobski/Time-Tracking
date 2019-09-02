@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://komodo/skin/" type="text/css"?>
+<?xml-stylesheet href="less://komodo/skin/global/global.less" type="text/css"?>
+<?xml-stylesheet href="chrome://timeTracking/skin/timeTrackingPanel.css" type="text/css"?>
+<!--<?xml-stylesheet href="chrome://FontAwesome/skin/font-awesome.min.css" type="text/css"?>-->
+
+<page xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script src="chrome://komodo/content/globals.js" type="application/x-javascript"/>
+	<script type="application/x-javascript" src="chrome://timeTracking/content/panel.js" />
+	<hbox flex="1">
+		<tree flex="1" hidecolumnpicker="true">
+		
+			<treecols>
+				<treecol id="project" label="Project" flex="1"/>
+				<treecol id="description" label="Description" flex="2"/>
+				<treecol id="startDate" label="Start Date" flex="1"/>
+				<treecol id="startDate" label="End Date" flex="1"/>
+				<treecol id="duration" label="Duration" flex="1"/>
+			</treecols>
+		
+			<treechildren id="timetrackingList">
+				
+			</treechildren>
+		
+		</tree>
+	</hbox>
+	<hbox>
+		<button onclick="TimeTracking.addTimeTracking();" label="Add time tracking" />
+		<button onclick="TimeTracking.stopTimeTracking();" label="Stop time tracking" />
+		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />
+		<spacer flex="1"/>
+	</hbox>
+</page>
+
+
