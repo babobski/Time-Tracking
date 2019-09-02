@@ -71,7 +71,7 @@ var TimeTracking = {
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 		
 		var appData = ko.extensions[myExt].myapp;
-		if (typeof appData.timeTracking !== 'undefined') {
+		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0) {
 			var lastItem = appData.timeTracking.pop();
 			if (lastItem.running === 'true') {
 				lastItem.running = 'false';
@@ -87,7 +87,7 @@ var TimeTracking = {
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 		
 		var appData = ko.extensions[myExt].myapp;
-		if (typeof appData.timeTracking !== 'undefined') {
+		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0) {
 			var lastItem = appData.timeTracking.pop();
 			if (lastItem.running === 'true') {
 				lastItem.endTime = new Date();

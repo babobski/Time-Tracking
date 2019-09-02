@@ -70,7 +70,25 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	this.init = () => {
 		var timetrackingPref = prefs.getCharPref('timetracking');
 		if (timetrackingPref.length > 0) {
-			appData.timeTracking = JSON.parse(timetrackingPref);
+            var timetracking = JSON.parse(timetrackingPref);
+            var parsedTimeTracking = [];
+            var reggex = /[0-9]{1,4}-[0-9]{1,2}-[0-9A-Z:.]+Z/;
+            for (var i = 0; i < timetracking.length; i++) {
+                var currTrack = timetracking[i];
+                var startTime = currTrack.startTime;
+                var endTime = currTrack.endTime;
+                
+                if (reggex.test(startTime)) {
+                    currTrack.startTime = new Date(startTime);
+                }
+                
+                if (reggex.test(endTime)) {
+                    currTrack.endTime = new Date(endTime);
+                }
+                
+                parsedTimeTracking.push(currTrack);
+            }
+			appData.timeTracking = parsedTimeTracking;
 		}
 	};
 	
