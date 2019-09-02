@@ -1,113 +1,12 @@
-.FontAwesome-clear {
-	clear: both;
-}
 
-.FontAwesome-box_title {
-	display: block;
-	padding-bottom: 5px;
-	font-weight: bold;
-	padding: 10px 4px 2px;
-}
-
-.font-fa,
-#FontAwesome-first-tabpanel-vbox {
-	padding: 10px;
-}
-
-.font-fa h2 {
-	font-size: 14px;
-	margin-top: 20px;
-	padding-bottom: 5px;
-	font-family: 'Ariel', 'Helvetica', sans-serif;
-}
-
-.font-fa h2:first-of-type {
-	margin-top: -10px;
-}
-
-#FontAwesome-second-tabpanel-vbox .font-fa button,
-#FontAwesome-second-tabpanel-vbox .font-fa button:hover {
-	border-radius: 0;
-	padding: 0 !important;
-	margin: 3px !important;
-	min-width: 0;
-	min-height: 0;
-	height: 32px !important;
-	width: 32px !important;
-	display: inline-block !important;
-	box-shadow: none;
-	cursor: pointer;
-}
-
-#FontAwesome-second-tabpanel-vbox .font-fa button.none {
-	display: none !important;
-}
-
-.font-fa a {
-	display: inline-block;
-}
-
-.font-fa p {
-	padding: 0 3px 5px 0;
-}
-
-.font-fa span {
-	display: inline-block;
-	text-align: center;
-	margin: 0px;
-	font-size: 15px;
-	line-height: 26px;
-	transition: all 200ms ease;
-	cursor: pointer;
-}
-
-#FontAwesome-second-tabpanel-vbox {
-	overflow: auto;
-}
-
-#openSettings {
-	font-size: 15px;
-	height: 25px;
-	line-height: 25px;
-	width: 25px;
-	padding: 3px;
-	display: inline-block;
-	text-align: center;
-	cursor: pointer;
-	margin-left: 3px;
-}
-
-#FontAwesomeSearch {
-	padding: 0 10px 5px;
-}
-
-.font-fa.insearch {
-	padding-top: 120px;
-}
-
-
-.font-fa.insearch h2,
-.font-fa.insearch p {
-	display: none !important;
-}
-
-#workspace_left_area[type="icons"] tab[widget="FontAwesomeViewbox"] .tab-icon,
-#workspace_right_area[type="icons"] tab[widget="FontAwesomeViewbox"] .tab-icon {
-	width: 14px;
-	height: 14px;
+#workspace_left_area[type="icons"] tab[widget="timeTrackingViewbox"] .tab-icon,
+#workspace_bottom_area tab[widget="timeTrackingViewbox"] .tab-icon,
+#workspace_right_area[type="icons"] tab[widget="timeTrackingViewbox"] .tab-icon {
+	width: 13px;
+	height: 13px;
 	visibility: visible;
-	background-image: url('koicon://ko-svg/chrome/icomoon/skin/font.svg') !important;
+	background-image: url('koicon://ko-svg/chrome/icomoon/skin/clock.svg') !important;
+	background-size: cover;
+	margin-right: 2px;
 }
 
-prefwindow,
-prefwindow:root {
-	-moz-binding: url("chrome://global/content/bindings/preferences.xml#prefwindow");
-}
-.pref-window:not(dialog):not(#prefWindow):not(#prefProjectsWindow) > vbox,
-.pref-window:not(dialog):not(#prefWindow):not(#prefProjectsWindow) > hbox,
-.pref-window:not(dialog):not(#prefWindow):not(#prefProjectsWindow) > box {
-	padding: 10px;
-}
-prefwindow > prefpane {
-	padding: 10px;
-}

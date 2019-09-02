@@ -1,4 +1,5 @@
-var TimeTracking = {
+var inProgress  = false,
+	TimeTracking = {
 	showTimeTracking: () => {		
 		var myExt = "TimeTracking@babobski.com";
 		
@@ -17,8 +18,8 @@ var TimeTracking = {
 		
 		list.innerHTML = '';
 		for (var i = 0; i < timeTracking.length; i++) {
-			var timeTrack = timeTracking[i];
-			var newTreeItem = document.createElement('treeitem'),
+			var timeTrack = timeTracking[i],
+				newTreeItem = document.createElement('treeitem'),
 				treeRow = document.createElement('treerow'),
 				projectCell = document.createElement('treecell'),
 				descCell = document.createElement('treecell'),
@@ -47,24 +48,31 @@ var TimeTracking = {
 		}
 	},
 	clearTimeTracking: () => {
-		var myExt = "TimeTracking@babobski.com";
+		var myExt = "TimeTracking@babobski.com",
+			mainW = ko.windowManager.getMainWindow();
+		
+		inProgress = true;
 		
 		if (!('extensions' in	ko)) ko.extensions = {};
 		if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
-		var appData = ko.extensions[myExt].myapp,
-		prefs = Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService).getBranch("extensions.timeTracking.");
-		prefs.setCharPref('timetracking','');
+		var appData = ko.extensions[myExt].myapp;
+		
+		mainW.extensions.timeTracking.saveTimeTracking();
 		appData.timeTracking = [];
 		TimeTracking.buildTimeTrackingList([]);
+		
+		inProgress = false;
 	},
 	addTimeTracking: () => {
 		var mainW = ko.windowManager.getMainWindow();
 		mainW.extensions.timeTracking.openAddTimeTrackingWindow();
 	},
 	stopTimeTracking: () => {
-		var myExt = "TimeTracking@babobski.com";
+		var myExt = "TimeTracking@babobski.com",
+			mainW = ko.windowManager.getMainWindow();
+		
+		inProgress = true;
 		
 		if (!('extensions' in	ko)) ko.extensions = {};
 		if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
@@ -78,9 +86,16 @@ var TimeTracking = {
 			}
 			appData.timeTracking.push(lastItem);
 		}
+		
+		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
+		
+		inProgress = false;
 	},
 	updateActiveTimer: () => {
-		var myExt = "TimeTracking@babobski.com";
+		var myExt = "TimeTracking@babobski.com",
+			mainW = ko.windowManager.getMainWindow();
+		
+		if (inProgress) return false;
 		
 		if (!('extensions' in	ko)) ko.extensions = {};
 		if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
@@ -94,6 +109,7 @@ var TimeTracking = {
 			}
 			appData.timeTracking.push(lastItem);
 		}
+		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
 	},
 	msToTime: (duration) => {
 		var milliseconds = parseInt((duration % 1000) / 100),
@@ -122,4 +138,4 @@ var TimeTracking = {
 window.setInterval(() => {
 	TimeTracking.showTimeTracking();
 	TimeTracking.updateActiveTimer();
-}, 3000);
+}, 1000);

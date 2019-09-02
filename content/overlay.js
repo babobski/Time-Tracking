@@ -44,6 +44,10 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		prefs.setCharPref('timetracking', JSON.stringify(appData.timeTracking));
 	};
 	
+	this.saveTimeTracking = (timetracking = []) => {
+		prefs.setCharPref('timetracking', JSON.stringify(timetracking));
+	};
+	
 	this.getTimeTracking = () => {
 		if (typeof appData.timeTracking !== undefined) {
 			return appData.timeTracking;
@@ -52,13 +56,13 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	};
 	
 	this.handleProjectChange = () => {
-		var koDialog = require("ko/dialogs");
-		var addTimeTracking = koDialog.confirm('Add new Time Tracking?');
+		var koDialog = require("ko/dialogs"),
+			addTimeTracking = koDialog.confirm('Add new Time Tracking?');
 		
 		if (addTimeTracking) {
-			var description = ko.interpolate.interpolateString('%(ask:Desciption:time tracking description)');
-			var currentdate = new Date(),
-			currentProject = ko.projects.manager.currentProject;
+			var description = ko.interpolate.interpolateString('%(ask:Desciption:time tracking description)'),
+				currentdate = new Date(),
+				currentProject = ko.projects.manager.currentProject;
 			
 			if (currentProject !== null) {
 				projectName = currentProject.name.replace('.komodoproject', '');
@@ -70,13 +74,13 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	this.init = () => {
 		var timetrackingPref = prefs.getCharPref('timetracking');
 		if (timetrackingPref.length > 0) {
-            var timetracking = JSON.parse(timetrackingPref);
-            var parsedTimeTracking = [];
+            var timetracking = JSON.parse(timetrackingPref),
+				parsedTimeTracking = [];
             var reggex = /[0-9]{1,4}-[0-9]{1,2}-[0-9A-Z:.]+Z/;
             for (var i = 0; i < timetracking.length; i++) {
-                var currTrack = timetracking[i];
-                var startTime = currTrack.startTime;
-                var endTime = currTrack.endTime;
+                var currTrack = timetracking[i],
+					startTime = currTrack.startTime,
+					endTime = currTrack.endTime;
                 
                 if (reggex.test(startTime)) {
                     currTrack.startTime = new Date(startTime);
@@ -93,8 +97,8 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	};
 	
 	this.openAddTimeTrackingWindow = () => {
-		var features = "chrome,titlebar,centerscreen,dependent";
-		var windowVars = {
+		var features = "chrome,titlebar,centerscreen,dependent",
+			windowVars = {
 			ko: ko,
 		};
 		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "timeTracking", features, windowVars);
