@@ -1,7 +1,8 @@
 var inProgress  = false,
 	currcount = 0,
 	TimeTracking = {
-	showTimeTracking: () => {		
+	showTimeTracking: (force) => {
+		force = force || false;
 		var myExt = "TimeTracking@babobski.com";
 		
 		if (!('extensions' in	ko)) ko.extensions = {};
@@ -9,7 +10,7 @@ var inProgress  = false,
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 		
 		var appData = ko.extensions[myExt].myapp;
-		if (typeof appData.timeTracking !== 'undefined' && (appData.timeTracking.length > currcount || appData.timeTracking.length < currcount)) {
+		if (typeof appData.timeTracking !== 'undefined' && (appData.timeTracking.length > currcount || appData.timeTracking.length < currcount || force)) {
 			TimeTracking.buildTimeTrackingList(appData.timeTracking);
 			currcount = appData.timeTracking.length;
 		}
@@ -111,6 +112,7 @@ var inProgress  = false,
 			}
 			appData.timeTracking.push(lastItem);
 		}
+		TimeTracking.showTimeTracking(true);
 		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
 	},
 	msToTime: (duration) => {
