@@ -1,4 +1,5 @@
 var inProgress  = false,
+	currcount = 0,
 	TimeTracking = {
 	showTimeTracking: () => {		
 		var myExt = "TimeTracking@babobski.com";
@@ -8,8 +9,9 @@ var inProgress  = false,
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 		
 		var appData = ko.extensions[myExt].myapp;
-		if (typeof appData.timeTracking !== 'undefined') {
+		if (typeof appData.timeTracking !== 'undefined' && (appData.timeTracking.length > currcount || appData.timeTracking.length < currcount)) {
 			TimeTracking.buildTimeTrackingList(appData.timeTracking);
+			currcount = appData.timeTracking.length;
 		}
 		return false;
 	},

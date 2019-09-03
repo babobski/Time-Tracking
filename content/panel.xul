@@ -2,7 +2,6 @@
 <?xml-stylesheet href="chrome://komodo/skin/" type="text/css"?>
 <?xml-stylesheet href="less://komodo/skin/global/global.less" type="text/css"?>
 <?xml-stylesheet href="chrome://timeTracking/skin/timeTrackingPanel.css" type="text/css"?>
-<!--<?xml-stylesheet href="chrome://FontAwesome/skin/font-awesome.min.css" type="text/css"?>-->
 
 <page xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script src="chrome://komodo/content/globals.js" type="application/x-javascript"/>
@@ -26,9 +25,11 @@
 	</hbox>
 	<hbox>
 		<button onclick="TimeTracking.addTimeTracking();" label="Add time tracking" />
+		<button onclick="TimeTracking.editTimeTracking();" label="Edit time tracking" disabled="true" />
+		<button onclick="TimeTracking.removeTimeTracking();" label="Remove time tracking" disabled="true" />
 		<button onclick="TimeTracking.stopTimeTracking();" label="Stop time tracking" />
-		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />
 		<spacer flex="1"/>
+		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />
 	</hbox>
 </page>
 
