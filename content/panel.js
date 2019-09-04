@@ -1,8 +1,7 @@
 var inProgress  = false,
 	currcount = 0,
 	TimeTracking = {
-	showTimeTracking: (force) => {
-		force = force || false;
+	showTimeTracking: () => {
 		var myExt = "TimeTracking@babobski.com";
 		
 		if (!('extensions' in	ko)) ko.extensions = {};
@@ -10,9 +9,12 @@ var inProgress  = false,
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 		
 		var appData = ko.extensions[myExt].myapp;
+		var force = appData.force;
 		if (typeof appData.timeTracking !== 'undefined' && (appData.timeTracking.length > currcount || appData.timeTracking.length < currcount || force)) {
 			TimeTracking.buildTimeTrackingList(appData.timeTracking);
+			TimeTracking.disableItemButtons();
 			currcount = appData.timeTracking.length;
+			appData.force = false;
 		}
 		return false;
 	},
@@ -32,8 +34,10 @@ var inProgress  = false,
 				
 			projectCell.setAttribute('label', timeTrack.title);
 			descCell.setAttribute('label', timeTrack.description);
-			startDateCell.setAttribute('label', timeTrack.startTime);
-			endDateCell.setAttribute('label', timeTrack.endTime);
+			startDateCell.setAttribute('label', TimeTracking.displayDate(timeTrack.startTime));
+			startDateCell.setAttribute('data-time', timeTrack.startTime);
+			endDateCell.setAttribute('label', TimeTracking.displayDate(timeTrack.endTime));
+			endDateCell.setAttribute('data-time', timeTrack.endTime);
 			if (Object.prototype.toString.call(timeTrack.startTime) === '[object Date]' && Object.prototype.toString.call(timeTrack.endTime) === '[object Date]') {	
 				durationCell.setAttribute('label', TimeTracking.msToTime(timeTrack.endTime - timeTrack.startTime));
 			} else {
@@ -48,6 +52,41 @@ var inProgress  = false,
 			
 			newTreeItem.appendChild(treeRow);
 			list.appendChild(newTreeItem);
+		}
+	},
+	editTimeTracking: () => {
+		var myExt = "TimeTracking@babobski.com",
+			Tree = document.getElementById('timetrackingTree'),
+			view = Tree.view,
+			selection = view.selection;
+			
+		if (!('extensions' in	ko)) ko.extensions = {};
+		if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
+		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
+		var appData = ko.extensions[myExt].myapp;
+		
+		if (selection.count > 0) {
+			var currItem = appData.timeTracking[selection.currentIndex];
+			var mainW = ko.windowManager.getMainWindow();
+			mainW.extensions.timeTracking.openEditTimeTrackingWindow(currItem, selection.currentIndex);
+		}
+	},
+	removeTimeTracking: () => {
+		var myExt = "TimeTracking@babobski.com",
+			Tree = document.getElementById('timetrackingTree'),
+			view = Tree.view,
+			selection = view.selection;
+			
+		if (!('extensions' in	ko)) ko.extensions = {};
+		if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
+		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
+		var appData = ko.extensions[myExt].myapp;
+		
+		if (selection.count > 0) {
+			var mainW = ko.windowManager.getMainWindow();
+			appData.timeTracking.splice(selection.currentIndex, 1);
+			appData.force = true;
+			mainW.extensions.timeTracking.saveTimeTracking(currItem, selection.currentIndex);
 		}
 	},
 	clearTimeTracking: () => {
@@ -96,7 +135,8 @@ var inProgress  = false,
 	},
 	updateActiveTimer: () => {
 		var myExt = "TimeTracking@babobski.com",
-			mainW = ko.windowManager.getMainWindow();
+			mainW = ko.windowManager.getMainWindow(),
+			treeChildren = document.getElementById('timetrackingList');
 		
 		if (inProgress) return false;
 		
@@ -105,19 +145,32 @@ var inProgress  = false,
 		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 		
 		var appData = ko.extensions[myExt].myapp;
+		var newDate = new Date();
 		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0) {
 			var lastItem = appData.timeTracking.pop();
 			if (lastItem.running === 'true') {
-				lastItem.endTime = new Date();
+				lastItem.endTime = newDate;
+				if (treeChildren.childElementCount > 0) {
+					var lastTreeItem = treeChildren.childNodes[(treeChildren.childElementCount - 1)],
+						lastTreeRow = lastTreeItem.childNodes[0],
+						startDateCell = lastTreeRow.childNodes[(lastTreeRow.childElementCount - 3)],
+						endDateCell = lastTreeRow.childNodes[lastTreeRow.childElementCount - 2],
+						durationCell = lastTreeRow.childNodes[lastTreeRow.childElementCount - 1],
+						startDate = new Date(startDateCell.getAttribute('data-time')),
+						endDate = new Date(endDateCell.getAttribute('data-time'));
+					
+					endDateCell.setAttribute('label', TimeTracking.displayDate(newDate));
+					durationCell.setAttribute('label', TimeTracking.msToTime(endDate - startDate));
+					endDateCell.setAttribute('data-time', newDate);
+				}
 			}
 			appData.timeTracking.push(lastItem);
 		}
-		TimeTracking.showTimeTracking(true);
+		
 		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
 	},
 	msToTime: (duration) => {
-		var milliseconds = parseInt((duration % 1000) / 100),
-			seconds = Math.floor((duration / 1000) % 60),
+		var seconds = Math.floor((duration / 1000) % 60),
 			minutes = Math.floor((duration / (1000 * 60)) % 60),
 			hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
@@ -136,7 +189,31 @@ var inProgress  = false,
 			datetime = hours + ":" + minutes + " - " + fulldate;
 			
 		return datetime;
-	}
+	},
+	enableDisableButtons: (tree) => {
+		var view = tree.view,
+			selection = view.selection;
+			
+		if (selection.count > 0) {
+			TimeTracking.eneableItemButtons();
+		} else {
+			TimeTracking.disableItemButtons();
+		}
+	},
+	eneableItemButtons: () => {
+		var removeBtn = document.getElementById('removeTimeTracking'),
+			editBtn = document.getElementById('editTimeTracking');
+		
+		removeBtn.removeAttribute('disabled');
+		editBtn.removeAttribute('disabled');
+	},
+	disableItemButtons: () => {
+		var removeBtn = document.getElementById('removeTimeTracking'),
+			editBtn = document.getElementById('editTimeTracking');
+		
+		removeBtn.setAttribute('disabled', true);
+		editBtn.setAttribute('disabled', true);
+	},
 };
 
 window.setInterval(() => {

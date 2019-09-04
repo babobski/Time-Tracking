@@ -11,12 +11,18 @@ var TimeTracking = {
 			var mainW = ko.windowManager.getMainWindow();
 			if (startTime.value === '' && endTime.value === '') {
 				mainW.extensions.timeTracking.addTimeTracking(project.value, desc.value, undefined, undefined, 'true');
-			} else if (endTime.value === '') {
-				mainW.extensions.timeTracking.addTimeTracking(project.value, desc.value, startTime.value, undefined, 'true');
-			} else {	
-				mainW.extensions.timeTracking.addTimeTracking(project.value, desc.value, startTime.value, endTime.value, 'false');
+			} else if (endTime.value === '' && startTime.value !== '') {
+				mainW.extensions.timeTracking.addTimeTracking(project.value, desc.value, new Date(startTime.value), undefined, 'true');
+			} else if (endTime.value !== '' && startTime.value !== '') {	
+				mainW.extensions.timeTracking.addTimeTracking(project.value, desc.value, new Date(startTime.value), new Date(endTime.value), 'false');
 			}
 			window.close();
 		}
+	},
+	setDate: () => {
+		var startDate = document.getElementById('startTime');
+		startDate.value = new Date();
 	}
-}
+};
+
+window.addEventListener('load', TimeTracking.setDate);

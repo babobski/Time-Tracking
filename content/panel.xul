@@ -7,7 +7,7 @@
 	<script src="chrome://komodo/content/globals.js" type="application/x-javascript"/>
 	<script type="application/x-javascript" src="chrome://timeTracking/content/panel.js" />
 	<hbox flex="1">
-		<tree flex="1" hidecolumnpicker="true">
+		<tree flex="1" hidecolumnpicker="true" id="timetrackingTree" onselect="TimeTracking.enableDisableButtons(this);">
 		
 			<treecols>
 				<treecol id="project" label="Project" flex="1"/>
@@ -25,8 +25,8 @@
 	</hbox>
 	<hbox>
 		<button onclick="TimeTracking.addTimeTracking();" label="Add time tracking" />
-		<button onclick="TimeTracking.editTimeTracking();" label="Edit time tracking" disabled="true" />
-		<button onclick="TimeTracking.removeTimeTracking();" label="Remove time tracking" disabled="true" />
+		<button id="editTimeTracking" onclick="TimeTracking.editTimeTracking();" label="Edit time tracking" disabled="true" />
+		<button id="removeTimeTracking" onclick="TimeTracking.removeTimeTracking();" label="Remove time tracking" disabled="true" />
 		<button onclick="TimeTracking.stopTimeTracking();" label="Stop time tracking" />
 		<spacer flex="1"/>
 		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />

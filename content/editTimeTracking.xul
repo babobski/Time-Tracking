@@ -4,26 +4,26 @@
 <?xml-stylesheet href="less://less/skin/less.less" type="text/css"?>
 
 <window
-	id="add-time-tracking-window"
-	title="Add New Time Tracking"
+	id="edit-time-tracking-window"
+	title="Edit Time Tracking"
 	orient="horizontal"
 	hidechrome="true"
 	width="330"
 	height="230"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/x-javascript" src="chrome://timeTracking/content/addTimeTracking.js" />
+	<script type="application/x-javascript" src="chrome://timeTracking/content/editTimeTracking.js" />
 	
 
 	<vbox flex="1" style="padding: 7px;">
 		<titlebar flex="1" style="margin: 4px 12px; text-align: center;">
-			Add Time Tracking
+			Edit Time Tracking
 		</titlebar>
 		<textbox label="Project" emptytext="Project" id="project" flex="1" />
 		<textbox label="Description" emptytext="Description" id="description" flex="1" />
 		<textbox label="Start Time" emptytext="Start Time" id="startTime" flex="1" />
 		<textbox label="End Time" emptytext="End Time" id="endTime" flex="1" />
 		<hbox flex="1">
-			<button label="Add Time Tracking" onclick="TimeTracking.addTimeTracking();" />
+			<button label="Save Time Tracking" onclick="TimeTracking.saveTimeTracking();" />
 			<button label="Cancel" onclick="window.close();" />
 			<spacer flex="1" />
 		</hbox>

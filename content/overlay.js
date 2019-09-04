@@ -16,6 +16,8 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
 	if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
 	var appData = ko.extensions[myExt].myapp;
+	
+	appData.force = false;
 
 	window.removeEventListener('load', self.init, false);
 	window.removeEventListener('project_opened', self.handleProjectChange, false);
@@ -42,6 +44,12 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		}
 
 		prefs.setCharPref('timetracking', JSON.stringify(appData.timeTracking));
+	};
+	
+	this.updateTimeTracking = (timeTracking, index) => {
+		appData.timeTracking[index] = timeTracking;
+		appData.force = true;
+		self.saveTimeTracking(appData.timeTracking);
 	};
 
 	this.saveTimeTracking = (timetracking = []) => {
@@ -102,6 +110,16 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 				ko: ko,
 			};
 		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "timeTracking", features, windowVars);
+	};
+	
+	this.openEditTimeTrackingWindow = (timetracking, index) => {
+		var features = "chrome,titlebar,centerscreen,dependent",
+			windowVars = {
+				ko: ko,
+				timetracking: timetracking,
+				index: index,
+			};
+		window.openDialog('chrome://timeTracking/content/editTimeTracking.xul', "timeTracking", features, windowVars);
 	};
 
 
