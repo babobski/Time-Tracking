@@ -136,7 +136,7 @@ var inProgress  = false,
 	updateActiveTimer: () => {
 		var myExt = "TimeTracking@babobski.com",
 			mainW = ko.windowManager.getMainWindow(),
-			treeChildren = document.getElementById('timetrackingList');
+			treeChildren = id('timetrackingList');
 		
 		if (inProgress) return false;
 		
@@ -172,13 +172,18 @@ var inProgress  = false,
 	msToTime: (duration) => {
 		var seconds = Math.floor((duration / 1000) % 60),
 			minutes = Math.floor((duration / (1000 * 60)) % 60),
-			hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+			hours = Math.floor((duration / (1000 * 60 * 60)) % 24),
+			days = Math.floor(duration / (1000 * 60 * 60 * 24)),
+			pad = function(n) {
+				return n < 10 ? '0' + n : n;
+			},
+			display = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+			
+		if (days > 0) {
+			return days + "d " + display;
+		}
 
-		hours = (hours < 10) ? "0" + hours : hours;
-		minutes = (minutes < 10) ? "0" + minutes : minutes;
-		seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-		return hours + ":" + minutes + ":" + seconds;
+		return display;
 	},
 	displayDate: (date) => {
 		var minutes = date.getMinutes().toString().length === 1 ? '0' + date.getMinutes() : date.getMinutes(),
@@ -201,20 +206,24 @@ var inProgress  = false,
 		}
 	},
 	eneableItemButtons: () => {
-		var removeBtn = document.getElementById('removeTimeTracking'),
-			editBtn = document.getElementById('editTimeTracking');
+		var removeBtn = id('removeTimeTracking'),
+			editBtn = id('editTimeTracking');
 		
 		removeBtn.removeAttribute('disabled');
 		editBtn.removeAttribute('disabled');
 	},
 	disableItemButtons: () => {
-		var removeBtn = document.getElementById('removeTimeTracking'),
-			editBtn = document.getElementById('editTimeTracking');
+		var removeBtn = id('removeTimeTracking'),
+			editBtn = id('editTimeTracking');
 		
 		removeBtn.setAttribute('disabled', true);
 		editBtn.setAttribute('disabled', true);
 	},
 };
+
+function id(name) {
+	return document.getElementById(name);
+}
 
 window.setInterval(() => {
 	TimeTracking.showTimeTracking();

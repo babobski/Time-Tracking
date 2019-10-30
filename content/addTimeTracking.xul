@@ -15,15 +15,41 @@
 	
 
 	<vbox flex="1" style="padding: 7px;">
-		<titlebar flex="1" style="margin: 4px 12px; text-align: center;">
-			Add Time Tracking
+		<titlebar flex="1" style="margin: 4px 12px; text-align: left;">
+			<vbox>
+				<image width="16" height="16" src="koicon://ko-svg/chrome/icomoon/skin/clock.svg?size=16" style="margin-right: 7px;" />
+			</vbox>
+			<vbox flex="1">Add Time Tracking</vbox>
 		</titlebar>
 		<textbox label="Project" emptytext="Project" id="project" flex="1" />
 		<textbox label="Description" emptytext="Description" id="description" flex="1" />
-		<textbox label="Start Time" emptytext="Start Time" id="startTime" flex="1" />
-		<textbox label="End Time" emptytext="End Time" id="endTime" flex="1" />
 		<hbox flex="1">
-			<button label="Add Time Tracking" onclick="TimeTracking.addTimeTracking();" />
+			<label value="Start Date" width="100" style="margin-top: 10px;" />
+			<textbox id="daymonth" value="" flex="1"/>
+			<textbox id="monthday" value="" flex="1"/>
+			<textbox id="year" value="" flex="1"/>
+		</hbox>
+		<hbox flex="1">
+			<label value="Start Time" width="100" style="margin-top: 10px;" />
+			<textbox id="hours" value="" flex="1"/>
+			<textbox id="minutes" value="" flex="1"/>
+			<textbox id="seconds" value="" flex="1"/>
+		</hbox>
+		<button label="Add end Time" oncommand="TimeTracking.showEndDate(); this.style.display = 'none';" flex="1"/>
+		<hbox id="endDate" flex="1" style="display: none;">
+			<label value="End Date" width="100" style="margin-top: 10px;" />
+			<textbox id="enddaymonth" flex="1"/>
+			<textbox id="endmonthday" flex="1"/>
+			<textbox id="endyear" flex="1"/>
+		</hbox>
+		<hbox id="endTime" flex="1" style="display: none;">
+			<label value="End Time" width="100" style="margin-top: 10px;" />
+			<textbox id="endhours" value="" flex="1"/>
+			<textbox id="endminutes" value="" flex="1"/>
+			<textbox id="endseconds" value="" flex="1"/>
+		</hbox>
+		<hbox flex="1">
+			<button label="Add Time Tracking" oncommand="TimeTracking.addTimeTracking();" />
 			<button label="Cancel" onclick="window.close();" />
 			<spacer flex="1" />
 		</hbox>

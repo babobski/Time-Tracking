@@ -64,19 +64,29 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	};
 
 	this.handleProjectChange = () => {
-		var koDialog = require("ko/dialogs"),
-			addTimeTracking = koDialog.confirm('Add new Time Tracking?');
-
-		if (addTimeTracking) {
-			var description = ko.interpolate.interpolateString('%(ask:Desciption:time tracking description)'),
-				currentdate = new Date(),
-				currentProject = ko.projects.manager.currentProject;
-
-			if (currentProject !== null) {
-				projectName = currentProject.name.replace('.komodoproject', '');
-				self.addTimeTracking(projectName, description, currentdate);
-			}
-		}
+		
+		var features = "chrome,titlebar,centerscreen,dependent",
+			currentProject = ko.projects.manager.currentProject;
+			windowVars = {
+				ko: ko,
+				timetracking: this,
+				projectName: (currentProject !== null ? currentProject.name.replace('.komodoproject', '') : '')
+			};
+		window.openDialog('chrome://timeTracking/content/timeTracking.xul', "timeTracking", features, windowVars);
+		
+		//var koDialog = require("ko/dialogs"),
+		//	addTimeTracking = koDialog.confirm('Add new Time Tracking?');
+		//
+		//if (addTimeTracking) {
+		//	var description = ko.interpolate.interpolateString('%(ask:Desciption:time tracking description)'),
+		//		currentdate = new Date(),
+		//		currentProject = ko.projects.manager.currentProject;
+		//
+		//	if (currentProject !== null) {
+		//		projectName = currentProject.name.replace('.komodoproject', '');
+		//		self.addTimeTracking(projectName, description, currentdate);
+		//	}
+		//}
 	};
 
 	this.init = () => {
@@ -104,12 +114,14 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		}
 	};
 
-	this.openAddTimeTrackingWindow = () => {
+	this.openAddTimeTrackingWindow = (project = '') => {
 		var features = "chrome,titlebar,centerscreen,dependent",
 			windowVars = {
 				ko: ko,
+				timetracking: this,
+				project: project
 			};
-		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "timeTracking", features, windowVars);
+		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "addTimeTracking", features, windowVars);
 	};
 	
 	this.openEditTimeTrackingWindow = (timetracking, index) => {
@@ -119,9 +131,42 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 				timetracking: timetracking,
 				index: index,
 			};
-		window.openDialog('chrome://timeTracking/content/editTimeTracking.xul', "timeTracking", features, windowVars);
+		window.openDialog('chrome://timeTracking/content/editTimeTracking.xul', "editTimeTracking", features, windowVars);
 	};
-
+	
+	this.dateToYear = (date) => {
+		return date.getFullYear();
+	};
+	
+	this.dateToMonth = (date) => {
+		var month = (date.getMonth() + 1).toString().length === 1 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+			
+		return month;
+	};
+	
+	this.dateToDay = (date) => {
+		var day = date.getDate().toString().length === 1 ? '0' + date.getDate() : date.getDate();
+			
+		return day;
+	};
+	
+	this.dateToHours = (date) => {
+		var hours = date.getHours().toString().length === 1 ? '0' + date.getHours() : date.getHours();
+			
+		return hours;
+	};
+	
+	this.dateToMinutes = (date) => {
+		var minutes = date.getMinutes().toString().length === 1 ? '0' + date.getMinutes() : date.getMinutes();
+			
+		return minutes;
+	};
+	
+	this.dateToSeconds = (date) => {
+		var seconds = date.getSeconds().toString().length === 1 ? '0' + date.getSeconds() : date.getSeconds();
+			
+		return seconds;
+	};
 
 	window.addEventListener('load', self.init, false);
 	window.addEventListener('project_opened', self.handleProjectChange, false);
