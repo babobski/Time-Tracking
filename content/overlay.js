@@ -51,6 +51,10 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		appData.force = true;
 		self.saveTimeTracking(appData.timeTracking);
 	};
+	
+	this.log = (mssg) => {
+		console.log(mssg);
+	};
 
 	this.saveTimeTracking = (timetracking = []) => {
 		prefs.setCharPref('timetracking', JSON.stringify(timetracking));
@@ -119,19 +123,23 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 			windowVars = {
 				ko: ko,
 				timetracking: this,
-				project: project
+				project: project,
+				mode: 'add'
 			};
 		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "addTimeTracking", features, windowVars);
 	};
 	
-	this.openEditTimeTrackingWindow = (timetracking, index) => {
+	this.openEditTimeTrackingWindow = (timeTrack, index) => {
 		var features = "chrome,titlebar,centerscreen,dependent",
 			windowVars = {
 				ko: ko,
-				timetracking: timetracking,
+				timetracking: this,
+				timeTrack: timeTrack,
 				index: index,
+				project: null,
+				mode: 'edit'
 			};
-		window.openDialog('chrome://timeTracking/content/editTimeTracking.xul', "editTimeTracking", features, windowVars);
+		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "addTimeTracking", features, windowVars);
 	};
 	
 	this.dateToYear = (date) => {

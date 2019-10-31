@@ -12,6 +12,9 @@
 	height="230"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://timeTracking/content/addTimeTracking.js" />
+	<script type="application/x-javascript">
+		window.onkeypress = (event) => { if (event.keyCode === 27) { window.close(); }};
+	</script>
 	
 
 	<vbox flex="1" style="padding: 7px;">
@@ -19,7 +22,7 @@
 			<vbox>
 				<image width="16" height="16" src="koicon://ko-svg/chrome/icomoon/skin/clock.svg?size=16" style="margin-right: 7px;" />
 			</vbox>
-			<vbox flex="1">Add Time Tracking</vbox>
+			<vbox flex="1" id="titlebar">Add Time Tracking</vbox>
 		</titlebar>
 		<textbox label="Project" emptytext="Project" id="project" flex="1" />
 		<textbox label="Description" emptytext="Description" id="description" flex="1" />
@@ -49,7 +52,8 @@
 			<textbox id="endseconds" value="" flex="1"/>
 		</hbox>
 		<hbox flex="1">
-			<button label="Add Time Tracking" oncommand="TimeTracking.addTimeTracking();" />
+			<button label="Add Time Tracking" id="add" oncommand="TimeTracking.addTimeTracking();" />
+			<button label="Update Time Tracking" id="edit" style="display: none;" oncommand="TimeTracking.updateTimetracking();" />
 			<button label="Cancel" onclick="window.close();" />
 			<spacer flex="1" />
 		</hbox>

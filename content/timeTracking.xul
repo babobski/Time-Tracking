@@ -12,6 +12,9 @@
 	height="90"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://timeTracking/content/timeTracking.js" />
+	<script type="application/x-javascript">
+		window.onkeypress = (event) => { if (event.keyCode === 27) { window.close(); }};
+	</script>
 	<vbox flex="1" style="padding: 7px;">
 		<titlebar flex="1" style="margin: 4px 12px 0; text-align: left;">
 			<vbox>

@@ -7,7 +7,7 @@
 	<script src="chrome://komodo/content/globals.js" type="application/x-javascript"/>
 	<script type="application/x-javascript" src="chrome://timeTracking/content/panel.js" />
 	<hbox flex="1">
-		<tree flex="1" hidecolumnpicker="true" id="timetrackingTree" onselect="TimeTracking.enableDisableButtons(this);">
+		<tree flex="1" hidecolumnpicker="true" id="timetrackingTree" ondblclick="TimeTracking.editTimeTracking();" onselect="TimeTracking.enableDisableButtons(this);">
 		
 			<treecols>
 				<treecol id="project" label="Project" flex="1"/>
@@ -18,7 +18,6 @@
 			</treecols>
 		
 			<treechildren id="timetrackingList">
-				
 			</treechildren>
 		
 		</tree>
