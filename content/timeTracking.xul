@@ -23,7 +23,7 @@
 			<vbox flex="1">Time Tracking</vbox>
 		</titlebar>
 		<hbox flex="1">
-			<button label="Add Time Tracking" oncommand="TimeTracking.addTimeTracking();" flex="1"/>
+			<button label="Add Time Tracking" id="add" oncommand="TimeTracking.addTimeTracking();" flex="1"/>
 			<button label="Resume Time Tracking" style="display: none;" flex="1"/>
 			<button label="Cancel" oncommand="window.close();" flex="1"/>
 		</hbox>

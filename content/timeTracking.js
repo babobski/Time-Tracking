@@ -1,4 +1,7 @@
 var TimeTracking = {
+	init: () => {
+		document.getElementById('add').focus();
+	},
 	addTimeTracking: () => {
 		var main = window.arguments[0],
 			projectName = main.projectName,
@@ -9,3 +12,5 @@ var TimeTracking = {
 		window.close();
 	},
 };
+
+window.addEventListener('load', TimeTracking.init, false);

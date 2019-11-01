@@ -6,6 +6,8 @@ var TimeTracking = {
 			mode = main.mode,
 			timetracking = main.timetracking;
 			
+			id('project').focus();
+			
 			window.timeTracking = timetracking;
 			
 			switch (mode) {
