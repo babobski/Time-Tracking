@@ -13,7 +13,13 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://timeTracking/content/addTimeTracking.js" />
 	<script type="application/x-javascript">
-		window.onkeypress = (event) => { if (event.keyCode === 27) { window.close(); }};
+		window.onkeypress = (event) => {
+			if (event.keyCode === 27) {
+				window.close();
+			} else if (event.keyCode === 13) {
+				TimeTracking.addTimeTracking();
+			}
+		};
 	</script>
 	
 

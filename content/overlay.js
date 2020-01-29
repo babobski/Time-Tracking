@@ -34,6 +34,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 			'startTime': startTime,
 			'endTime': endTime,
 			'running': running,
+			'timeElapsed': 0,
 		};
 
 		if (typeof appData.timeTracking !== 'undefined') {
@@ -69,7 +70,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 
 	this.handleProjectChange = () => {
 		
-		var features = "chrome,titlebar,centerscreen,dependent",
+		var features = "chrome,titlebar,centerscreen,dependent,modal",
 			currentProject = ko.projects.manager.currentProject;
 			windowVars = {
 				ko: ko,
@@ -77,20 +78,6 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 				projectName: (currentProject !== null ? currentProject.name.replace('.komodoproject', '') : '')
 			};
 		window.openDialog('chrome://timeTracking/content/timeTracking.xul', "timeTracking", features, windowVars);
-		
-		//var koDialog = require("ko/dialogs"),
-		//	addTimeTracking = koDialog.confirm('Add new Time Tracking?');
-		//
-		//if (addTimeTracking) {
-		//	var description = ko.interpolate.interpolateString('%(ask:Desciption:time tracking description)'),
-		//		currentdate = new Date(),
-		//		currentProject = ko.projects.manager.currentProject;
-		//
-		//	if (currentProject !== null) {
-		//		projectName = currentProject.name.replace('.komodoproject', '');
-		//		self.addTimeTracking(projectName, description, currentdate);
-		//	}
-		//}
 	};
 
 	this.init = () => {
@@ -119,7 +106,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	};
 
 	this.openAddTimeTrackingWindow = (project = '') => {
-		var features = "chrome,titlebar,centerscreen,dependent",
+		var features = "chrome,titlebar,centerscreen,dependent,modal",
 			windowVars = {
 				ko: ko,
 				timetracking: this,
@@ -130,7 +117,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	};
 	
 	this.openEditTimeTrackingWindow = (timeTrack, index) => {
-		var features = "chrome,titlebar,centerscreen,dependent",
+		var features = "chrome,titlebar,centerscreen,dependent,modal",
 			windowVars = {
 				ko: ko,
 				timetracking: this,

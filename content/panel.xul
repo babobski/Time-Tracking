@@ -26,6 +26,7 @@
 		<button onclick="TimeTracking.addTimeTracking();" label="Add time tracking" />
 		<button id="editTimeTracking" onclick="TimeTracking.editTimeTracking();" label="Edit time tracking" disabled="true" />
 		<button id="removeTimeTracking" onclick="TimeTracking.removeTimeTracking();" label="Remove time tracking" disabled="true" />
+		<button id="resumeTimeTracking" onclick="TimeTracking.resumeTimeTracking();" label="Resume time tracking" disabled="true" />
 		<button onclick="TimeTracking.stopTimeTracking();" label="Stop time tracking" />
 		<spacer flex="1"/>
 		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />

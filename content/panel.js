@@ -125,8 +125,36 @@ var inProgress  = false,
 			var lastItem = appData.timeTracking.pop();
 			if (lastItem.running === 'true') {
 				lastItem.running = 'false';
+				lastItem.timeElapsed = lastItem.timeElapsed + (new Date(lastItem.endTime) - new Date(lastItem.startTime));
 			}
 			appData.timeTracking.push(lastItem);
+			appData.force = true;
+		}
+		
+		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
+		
+		inProgress = false;
+	},
+	resumeTimeTracking: () => {
+		var myExt = "TimeTracking@babobski.com",
+			mainW = ko.windowManager.getMainWindow(),
+			Tree = document.getElementById('timetrackingTree'),
+			view = Tree.view,
+			selection = view.selection;
+			
+		if (!('extensions' in	ko)) ko.extensions = {};
+		if (!(myExt in ko.extensions)) ko.extensions[myExt] = {};
+		if (!('myapp' in ko.extensions[myExt])) ko.extensions[myExt].myapp = {};
+		var appData = ko.extensions[myExt].myapp;
+		
+		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0 && selection.count > 0) {
+			var selectedItem = appData.timeTracking.slice(selection.currentIndex, selection.currentIndex+1);
+			appData.timeTracking.splice(selection.currentIndex, 1);
+			selectedItem[0].running = true;
+			selectedItem[0].startTime = new Date();
+			selectedItem[0].endTime = new Date();
+			appData.timeTracking.push(selectedItem[0]);
+			console.log(selectedItem);
 		}
 		
 		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
@@ -156,11 +184,10 @@ var inProgress  = false,
 						startDateCell = lastTreeRow.childNodes[(lastTreeRow.childElementCount - 3)],
 						endDateCell = lastTreeRow.childNodes[lastTreeRow.childElementCount - 2],
 						durationCell = lastTreeRow.childNodes[lastTreeRow.childElementCount - 1],
-						startDate = new Date(startDateCell.getAttribute('data-time')),
-						endDate = new Date(endDateCell.getAttribute('data-time'));
+						startDate = new Date(startDateCell.getAttribute('data-time'));
 					
 					endDateCell.setAttribute('label', TimeTracking.displayDate(newDate));
-					durationCell.setAttribute('label', TimeTracking.msToTime(endDate - startDate));
+					durationCell.setAttribute('label', TimeTracking.msToTime(newDate - startDate));
 					endDateCell.setAttribute('data-time', newDate);
 				}
 			}
@@ -207,17 +234,21 @@ var inProgress  = false,
 	},
 	eneableItemButtons: () => {
 		var removeBtn = id('removeTimeTracking'),
-			editBtn = id('editTimeTracking');
+			editBtn = id('editTimeTracking'),
+			resumeBtn = id('resumeTimeTracking');
 		
 		removeBtn.removeAttribute('disabled');
 		editBtn.removeAttribute('disabled');
+		resumeBtn.removeAttribute('disabled');
 	},
 	disableItemButtons: () => {
 		var removeBtn = id('removeTimeTracking'),
-			editBtn = id('editTimeTracking');
+			editBtn = id('editTimeTracking'),
+			resumeBtn = id('resumeTimeTracking');
 		
 		removeBtn.setAttribute('disabled', true);
 		editBtn.setAttribute('disabled', true);
+		resumeBtn.setAttribute('disabled', true);
 	},
 };
 

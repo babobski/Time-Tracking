@@ -90,7 +90,8 @@ var TimeTracking = {
 				'description': description.value,
 				'startTime': startDateTime,
 				'endTime': endDateTime,
-				'running': main.running,
+				'running': main.mode === 'edit' ? main.timeTrack.running : true,
+				'timeElapsed': main.mode === 'edit' ? main.timeTrack.timeElapsed : 0,
 			};
 			
 			mainW.extensions.timeTracking.updateTimeTracking(timetrack, main.index);
