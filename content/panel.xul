@@ -32,5 +32,3 @@
 		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />
 	</hbox>
 </page>
-
-

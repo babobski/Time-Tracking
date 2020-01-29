@@ -47,6 +47,20 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		prefs.setCharPref('timetracking', JSON.stringify(appData.timeTracking));
 	};
 	
+	this.stopTimeTracking = () => {
+		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0) {
+			var lastItem = appData.timeTracking.pop();
+			if (lastItem.running === 'true') {
+				lastItem.running = 'false';
+				lastItem.timeElapsed = lastItem.timeElapsed + (new Date(lastItem.endTime) - new Date(lastItem.startTime));
+			}
+			appData.timeTracking.push(lastItem);
+			appData.force = true;
+			
+			this.saveTimeTracking(appData.timeTracking);
+		}
+	};
+	
 	this.updateTimeTracking = (timeTracking, index) => {
 		appData.timeTracking[index] = timeTracking;
 		appData.force = true;
@@ -129,6 +143,11 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "addTimeTracking", features, windowVars);
 	};
 	
+	this.openSettingsWindow = () => {
+		var features = "chrome,centerscreen,dependent";
+		window.openDialog('chrome://timeTracking/content/pref-overlay.xul', "openTimeTrackingSettings", features);
+	};
+	
 	this.dateToYear = (date) => {
 		return date.getFullYear();
 	};
@@ -162,6 +181,47 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 			
 		return seconds;
 	};
+	
+	this._addDynamicToolbarButton = () => {
+		const db = require('ko/dynamic-button');
+		var isView = () => {
+			return ko.views.manager.currentView;
+		};
+		
+		const button = db.register({
+			label: "Time Tracking",
+			tooltip: "Time Tracking",
+			icon: "clock-o",
+			menuitems: [
+				{
+					label: "Add Time Tracking",
+					name: "addTimeTrack",
+					command: () => {
+						extensions.timeTracking.openAddTimeTrackingWindow();
+					}
+				},
+				{
+					label: "Stop Time Tracking",
+					name: "stopTimeTrack",
+					command: () => {
+						extensions.timeTracking.stopTimeTracking();
+					}
+				},
+				{
+					label: "Settings",
+					name: "openSettings",
+					command: () => {
+						extensions.timeTracking.openSettingsWindow();
+					}
+				},
+			],
+			isEnabled: () => {
+				return true;
+			},
+		});
+	};
+	
+	self._addDynamicToolbarButton();
 
 	window.addEventListener('load', self.init, false);
 	window.addEventListener('project_opened', self.handleProjectChange, false);

@@ -10,16 +10,16 @@
 	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
 	<prefpane id="timeTracking-pane" label="timeTracking Preferences" style="padding-top: 0;">
-		<!--<preferences>-->
-		<!--	<preference id="pref_typeInsert" name="extensions.FontAwesome.typeInsert" type="string"/>-->
-		<!--</preferences>-->
-		<!---->
-		<!--<titlebar id="AwesomeTitleBar" height="30" width="100%"  style="background: transparent; z-index: 888;">-->
-		<!--	<label flex="1" style="text-align: center; padding: 7px 0; pointer-events: none;">-->
-		<!--		Font Awesome-->
-		<!--	</label>-->
-		<!--</titlebar>-->
-		<!---->
+		<preferences>
+			<preference id="pref_typeInsert" name="extensions.FontAwesome.typeInsert" type="string"/>
+		</preferences>
+		
+		<titlebar id="timeTrackingTitleBar" height="30" width="100%"  style="background: transparent; z-index: 888;">
+			<label flex="1" style="text-align: center; padding: 7px 0; pointer-events: none;">
+				Time Tracking
+			</label>
+		</titlebar>
+		
 		<!--<label value="How to insert the font awesome icon."/>-->
 		<!--<menulist id="insert" preference="pref_typeInsert">-->
 		<!--	<menupopup>-->
