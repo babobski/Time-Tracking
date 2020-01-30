@@ -90,7 +90,8 @@ var TimeTracking = {
 				'description': description.value,
 				'startTime': startDateTime,
 				'endTime': endDateTime,
-				'running': main.mode === 'edit' ? main.timeTrack.running : true,
+				'running': main.mode === 'edit' ? main.timeTrack.running : 'true',
+				'active': main.mode === 'edit' ? main.timeTrack.timeElapsed : 'true',
 				'timeElapsed': main.mode === 'edit' ? main.timeTrack.timeElapsed : 0,
 			};
 			

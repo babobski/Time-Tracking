@@ -9,7 +9,9 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 (function() {
 	var self = this,
 		prefs = Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService).getBranch("ko.extensions.timeTracking.");
+		.getService(Components.interfaces.nsIPrefService).getBranch("ko.extensions.timeTracking."),
+		observerSvc = Components.classes["@mozilla.org/observer-service;1"].
+		getService(Components.interfaces.nsIObserverService);
 
 	if (!('ko.extensions' in ko)) ko.extensions = {};
 	var myExt = "TimeTracking@babobski.com";
@@ -22,7 +24,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	window.removeEventListener('load', self.init, false);
 	window.removeEventListener('project_opened', self.handleProjectChange, false);
 
-	this.addTimeTracking = (title, description, startTime, endTime, running = 'true') => {
+	this.addTimeTracking = (title, description, startTime, endTime, running = 'true', active = 'true') => {
 		title = title || '';
 		description = description || '';
 		startTime = startTime || new Date();
@@ -34,6 +36,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 			'startTime': startTime,
 			'endTime': endTime,
 			'running': running,
+			'active': active,
 			'timeElapsed': 0,
 		};
 
@@ -47,12 +50,15 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		prefs.setCharPref('timetracking', JSON.stringify(appData.timeTracking));
 	};
 	
-	this.stopTimeTracking = () => {
+	this.stopTimeTracking = (active = true) => {
 		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0) {
 			var lastItem = appData.timeTracking.pop();
 			if (lastItem.running === 'true') {
 				lastItem.running = 'false';
 				lastItem.timeElapsed = lastItem.timeElapsed + (new Date(lastItem.endTime) - new Date(lastItem.startTime));
+			}
+			if (active && lastItem.active === 'true') {
+				lastItem.active = 'false';
 			}
 			appData.timeTracking.push(lastItem);
 			appData.force = true;
@@ -112,11 +118,24 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 				if (reggex.test(endTime)) {
 					currTrack.endTime = new Date(endTime);
 				}
+				
+				if (currTrack.active === 'true' && currTrack.running === 'false') {
+					var askContinueRunning = ko.dialogs.yesNo('A time track was active when closing komodo, do you want to track the time komodo was closed?');
+					if (askContinueRunning === 'Yes') {
+						currTrack.running = 'true';
+					} else {
+						currTrack.active = 'false';
+					}
+				}
 
 				parsedTimeTracking.push(currTrack);
 			}
 			appData.timeTracking = parsedTimeTracking;
 		}
+	};
+	
+	this.shutDown = () => {
+		self.stopTimeTracking(false);
 	};
 
 	this.openAddTimeTrackingWindow = (project = '') => {
@@ -225,5 +244,6 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 
 	window.addEventListener('load', self.init, false);
 	window.addEventListener('project_opened', self.handleProjectChange, false);
+	observerSvc.addObserver(self.shutDown, "quit-application-requested", false);
 
 }).apply(extensions.timeTracking);

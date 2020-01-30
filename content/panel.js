@@ -128,12 +128,16 @@ var inProgress  = false,
 		
 		if (typeof appData.timeTracking !== 'undefined' && appData.timeTracking.length > 0 && selection.count > 0) {
 			var selectedItem = appData.timeTracking.slice(selection.currentIndex, selection.currentIndex+1);
-			appData.timeTracking.splice(selection.currentIndex, 1);
-			selectedItem[0].running = true;
-			selectedItem[0].startTime = new Date();
-			selectedItem[0].endTime = new Date();
-			appData.timeTracking.push(selectedItem[0]);
-			console.log(selectedItem);
+			var newTimeTrack = {
+				'title': selectedItem[0].title,
+				'description': selectedItem[0].description,
+				'startTime': new Date(),
+				'endTime': new Date(),
+				'running': 'true',
+				'active': 'true',
+				'timeElapsed': 0,
+			};
+			appData.timeTracking.push(newTimeTrack);
 		}
 		
 		mainW.extensions.timeTracking.saveTimeTracking(appData.timeTracking);
