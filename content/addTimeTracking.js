@@ -25,12 +25,29 @@ var TimeTracking = {
 					TimeTracking.setDate(timeTrack);
 					break;
 			}
+			
+			TimeTracking.setTypes(main);
+	},
+	setTypes: (main) => {
+		var prefs = main.prefs,
+			ko = main.ko,
+			types = prefs.getCharPref('trackingTypes'),
+			typesArray = types.split(','),
+			typesPopup = document.getElementById('type'),
+			main2 = ko.windowManager.getMainWindow();
+		
+		if (typesArray.length > 0) {
+			for (var i = 0; i < typesArray.length; i++) {
+				typesPopup.appendItem(typesArray[i], typesArray[i]);
+			}
+		}
 	},
 	addTimeTracking: () => {
 		var main = window.arguments[0],
 			ko = main.ko,
 			project = id('project'),
 			description = id('description'),
+			type = id('type'),
 			startDay = id('daymonth'),
 			startMonth = id('monthday'),
 			startYear = id('year'),
@@ -44,18 +61,22 @@ var TimeTracking = {
 			endMinutes = id('endminutes'),
 			endSeconds = id('endseconds'),
 			startDateTime,
-			endDateTime;
+			endDateTime,
+			typeVal;
+			
+		var mainW = ko.windowManager.getMainWindow();
 			
 		startDateTime = TimeTracking.createDateTime(val(startDay), parseMonth(val(startMonth)), val(startYear), val(startHours), val(startMinutes), val(startSeconds));
 		endDateTime = TimeTracking.createDateTime(val(endDay), parseMonth(val(endMonth)), val(endYear), val(endHours), val(endMinutes), val(endSeconds));
 		
+		typeVal = type.selectedItem !== null ? type.value : '';
+		
 		if (val(project) !== '' && val(description) !== '' && startDateTime instanceof Date) {
-			var mainW = ko.windowManager.getMainWindow();
 			if (TimeTracking.addEndTime && endDateTime instanceof Date) {
-				mainW.extensions.timeTracking.addTimeTracking(val(project), val(description), startDateTime, endDateTime, 'false');
+				mainW.extensions.timeTracking.addTimeTracking(val(project), val(description), typeVal, startDateTime, endDateTime, 'false');
 				window.close();
 			} else if (!TimeTracking.addEndTime) {
-				mainW.extensions.timeTracking.addTimeTracking(val(project), val(description), startDateTime, undefined, 'true');
+				mainW.extensions.timeTracking.addTimeTracking(val(project), val(description), typeVal, startDateTime, undefined, 'true');
 				window.close();
 			} 
 		}
@@ -66,6 +87,7 @@ var TimeTracking = {
 			mainW = ko.windowManager.getMainWindow(),
 			project = id('project'),
 			description = id('description'),
+			type = id('type'),
 			startDay = id('daymonth'),
 			startMonth = id('monthday'),
 			startYear = id('year'),
@@ -79,15 +101,20 @@ var TimeTracking = {
 			endMinutes = id('endminutes'),
 			endSeconds = id('endseconds'),
 			startDateTime,
-			endDateTime;
+			endDateTime,
+			typeVal;
 			
 		startDateTime = TimeTracking.createDateTime(val(startDay), parseMonth(val(startMonth)), val(startYear), val(startHours), val(startMinutes), val(startSeconds));
 		endDateTime = TimeTracking.createDateTime(val(endDay), parseMonth(val(endMonth)), val(endYear), val(endHours), val(endMinutes), val(endSeconds));
 		
+		typeVal = type.selectedItem !== null ? type.value : '';
+		
 		if (val(project) !== '' && val(description) !== '' && startDateTime instanceof Date) {
+			
 			var timetrack = {
-				'title': project.value,
-				'description': description.value,
+				'title': val(project),
+				'description': val(description),
+				'type': typeVal,
 				'startTime': startDateTime,
 				'endTime': endDateTime,
 				'running': main.mode === 'edit' ? main.timeTrack.running : 'true',
@@ -109,6 +136,7 @@ var TimeTracking = {
 			endDate = null,
 			project = id('project'),
 			description = id('description'),
+			type = id('type'),
 			startDay = id('daymonth'),
 			startMonth = id('monthday'),
 			startYear = id('year'),
@@ -121,6 +149,7 @@ var TimeTracking = {
 		if (timeTrack) {
 			project.value = timeTrack.title;
 			description.value = timeTrack.description;
+			type.value = timeTrack.type;
 			startDate = new Date(timeTrack.startTime);
 			timeTracking.log(timeTrack.endTime);
 			timeTracking.log(timeTrack.endTime.length);
@@ -162,7 +191,7 @@ var TimeTracking = {
 		
 		endDate.style.display = '-moz-box';
 		endTime.style.display = '-moz-box';
-		window.resizeTo(330, 250);
+		window.resizeTo(330, 255);
 	},
 	switchToEditMode: () => {
 		id('titlebar').innerHTML = 'Edit Time Tracking';

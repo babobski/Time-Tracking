@@ -9,7 +9,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 (function() {
 	var self = this,
 		prefs = Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService).getBranch("ko.extensions.timeTracking."),
+		.getService(Components.interfaces.nsIPrefService).getBranch("extensions.timeTracking."),
 		observerSvc = Components.classes["@mozilla.org/observer-service;1"].
 		getService(Components.interfaces.nsIObserverService);
 
@@ -24,15 +24,18 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 	window.removeEventListener('load', self.init, false);
 	window.removeEventListener('project_opened', self.handleProjectChange, false);
 
-	this.addTimeTracking = (title, description, startTime, endTime, running = 'true', active = 'true') => {
+	this.addTimeTracking = (title, description, type, startTime, endTime, running = 'true', active = 'true') => {
 		title = title || '';
 		description = description || '';
 		startTime = startTime || new Date();
 		endTime = endTime || new Date(startTime.getTime());
+		
+		self.stopTimeTracking();
 
 		var timeTrack = {
 			'title': title,
 			'description': description,
+			'type': type,
 			'startTime': startTime,
 			'endTime': endTime,
 			'running': running,
@@ -142,6 +145,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		var features = "chrome,titlebar,centerscreen,dependent,modal",
 			windowVars = {
 				ko: ko,
+				prefs: prefs,
 				timetracking: this,
 				project: project,
 				mode: 'add'
@@ -153,6 +157,7 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 		var features = "chrome,titlebar,centerscreen,dependent,modal",
 			windowVars = {
 				ko: ko,
+				prefs: prefs,
 				timetracking: this,
 				timeTrack: timeTrack,
 				index: index,

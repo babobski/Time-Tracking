@@ -12,6 +12,7 @@
 			<treecols>
 				<treecol id="project" label="Project" flex="1"/>
 				<treecol id="description" label="Description" flex="2"/>
+				<treecol id="type" label="Type" flex="1"/>
 				<treecol id="startDate" label="Start Date" flex="1"/>
 				<treecol id="startDate" label="End Date" flex="1"/>
 				<treecol id="duration" label="Duration" flex="1"/>

@@ -9,7 +9,7 @@
 	orient="horizontal"
 	hidechrome="true"
 	width="330"
-	height="230"
+	height="225"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://timeTracking/content/addTimeTracking.js" />
 	<script type="application/x-javascript">
@@ -32,6 +32,11 @@
 		</titlebar>
 		<textbox label="Project" emptytext="Project" id="project" flex="1" />
 		<textbox label="Description" emptytext="Description" id="description" flex="1" />
+		<menulist label="Type" id="type" flex="1" oncommand="this.value = event.target.value;">
+			<menupopup>
+				
+			</menupopup>
+		</menulist>
 		<hbox flex="1">
 			<label value="Start Date" width="100" style="margin-top: 10px;" />
 			<textbox id="daymonth" value="" flex="1"/>

@@ -28,12 +28,14 @@ var inProgress  = false,
 				treeRow = document.createElement('treerow'),
 				projectCell = document.createElement('treecell'),
 				descCell = document.createElement('treecell'),
+				typeCell = document.createElement('treecell'),
 				startDateCell = document.createElement('treecell');
 				endDateCell = document.createElement('treecell');
 				durationCell = document.createElement('treecell');
 				
 			projectCell.setAttribute('label', timeTrack.title);
 			descCell.setAttribute('label', timeTrack.description);
+			typeCell.setAttribute('label', timeTrack.type);
 			startDateCell.setAttribute('label', TimeTracking.displayDate(timeTrack.startTime));
 			startDateCell.setAttribute('data-time', timeTrack.startTime);
 			endDateCell.setAttribute('label', TimeTracking.displayDate(timeTrack.endTime));
@@ -46,6 +48,7 @@ var inProgress  = false,
 			
 			treeRow.appendChild(projectCell);
 			treeRow.appendChild(descCell);
+			treeRow.appendChild(typeCell);
 			treeRow.appendChild(startDateCell);
 			treeRow.appendChild(endDateCell);
 			treeRow.appendChild(durationCell);
@@ -131,6 +134,7 @@ var inProgress  = false,
 			var newTimeTrack = {
 				'title': selectedItem[0].title,
 				'description': selectedItem[0].description,
+				'type': selectedItem[0].type,
 				'startTime': new Date(),
 				'endTime': new Date(),
 				'running': 'true',

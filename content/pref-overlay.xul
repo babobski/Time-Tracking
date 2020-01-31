@@ -7,11 +7,13 @@
 	 title="timeTracking Preferences"
 	 xmlns:html="http://www.w3.org/1999/xhtml"
 	 hidechrome="true"
+	 width="300"
+	 height="120"
 	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
-	<prefpane id="timeTracking-pane" label="timeTracking Preferences" style="padding-top: 0;">
+	<prefpane id="timeTracking-pane" label="timeTracking Preferences" style="padding-top: 0; padding-left: 5px; padding-right: 5px;">
 		<preferences>
-			<preference id="pref_typeInsert" name="extensions.FontAwesome.typeInsert" type="string"/>
+			<preference id="pref_trackingTypes" name="extensions.timeTracking.trackingTypes" type="string"/>
 		</preferences>
 		
 		<titlebar id="timeTrackingTitleBar" height="30" width="100%"  style="background: transparent; z-index: 888;">
@@ -20,15 +22,7 @@
 			</label>
 		</titlebar>
 		
-		<!--<label value="How to insert the font awesome icon."/>-->
-		<!--<menulist id="insert" preference="pref_typeInsert">-->
-		<!--	<menupopup>-->
-		<!--		<menuitem value="auto" label="Auto: insert depending on file, on css,sass,scss,less files the escaped value is inserted."/>-->
-		<!--		<menuitem value="full" label="Full: Insert tag with class"/>-->
-		<!--		<menuitem value="class" label="Class: Insert only the class name"/>-->
-		<!--		<menuitem value="css" label="CSS: Insert escaped css value"/>-->
-		<!--	</menupopup>-->
-		<!--</menulist>-->
+		<textbox id="trackingTypes" label="Tracking types" preference="pref_trackingTypes" />
 	</prefpane>
 
 </prefwindow>
