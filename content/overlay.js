@@ -164,7 +164,17 @@ if (typeof(extensions.timeTracking) === 'undefined') extensions.timeTracking = {
 				project: null,
 				mode: 'edit'
 			};
-		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "addTimeTracking", features, windowVars);
+		window.openDialog('chrome://timeTracking/content/addTimeTracking.xul', "editTimeTracking", features, windowVars);
+	};
+	
+	this.openStatsDialog = () => {
+		var features = "chrome,titlebar,centerscreen,dependent",
+			windowVars = {
+				ko: ko,
+				prefs: prefs,
+				timetracking: this,
+			};
+		window.openDialog('chrome://timeTracking/content/statistics.xul', "StatsTimeTracking", features, windowVars);
 	};
 	
 	this.openSettingsWindow = () => {

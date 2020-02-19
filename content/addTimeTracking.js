@@ -191,7 +191,7 @@ var TimeTracking = {
 		
 		endDate.style.display = '-moz-box';
 		endTime.style.display = '-moz-box';
-		window.resizeTo(330, 255);
+		window.resizeTo(330, 263);
 	},
 	switchToEditMode: () => {
 		id('titlebar').innerHTML = 'Edit Time Tracking';

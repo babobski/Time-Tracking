@@ -1,0 +1,26 @@
+<?xml-stylesheet href="less://komodo/skin/global/global.less" type="text/css"?>
+
+<window xmlns:html="http://www.w3.org/1999/xhtml"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		orient="vertical"
+		hidechrome="true"
+		width="700"
+		height="370"
+		title="Statistics">
+	<script>
+		// Close window when esc is pressed
+		window.addEventListener('keypress', function(event){
+			if (event.keyCode === 27) {
+				window.close();
+			}
+		});
+	</script>
+	
+	<titlebar id="StatitsticsTitleBar" width="100%"  style="background: transparent;">
+		<label flex="1" style="text-align: center; padding: 7px 0; pointer-events: none;">
+			Time Tracing Statistics 
+		</label>
+	</titlebar>
+	<browser flex="1" id="TimeTracingStatistics" src="chrome://timeTracking/content/statistics.html"/>
+	<button label="Close" onclick="window.close();" />
+</window>

@@ -148,6 +148,10 @@ var inProgress  = false,
 		
 		inProgress = false;
 	},
+	openStatisticsWindow: () => {
+		var mainW = ko.windowManager.getMainWindow();
+		mainW.extensions.timeTracking.openStatsDialog();
+	},
 	updateActiveTimer: () => {
 		var myExt = "TimeTracking@babobski.com",
 			mainW = ko.windowManager.getMainWindow(),

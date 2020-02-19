@@ -29,6 +29,7 @@
 		<button id="removeTimeTracking" onclick="TimeTracking.removeTimeTracking();" label="Remove time tracking" disabled="true" />
 		<button id="resumeTimeTracking" onclick="TimeTracking.resumeTimeTracking();" label="Resume time tracking" disabled="true" />
 		<button onclick="TimeTracking.stopTimeTracking();" label="Stop time tracking" />
+		<button onclick="TimeTracking.openStatisticsWindow();" label="Statistics" />
 		<spacer flex="1"/>
 		<button onclick="TimeTracking.clearTimeTracking();" label="Clear time tracking list" />
 	</hbox>
